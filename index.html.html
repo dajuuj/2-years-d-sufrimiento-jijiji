@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mi niña pequeña</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Dancing Script', cursive;
+      background: linear-gradient(135deg, #ffc0cb, #a2d2ff);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      transition: background 2s ease;
+    }
+
+    h1 {
+      font-size: 3.5em;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff; }
+      to { text-shadow: 0 0 25px #ffb6c1, 0 0 50px #a2d2ff; }
+    }
+
+    #start-btn {
+      margin-top: 20px;
+      background: white;
+      color: #ff69b4;
+      border: none;
+      padding: 10px 25px;
+      font-size: 1.2em;
+      border-radius: 25px;
+      cursor: pointer;
+      animation: bounce 2s infinite;
+      transition: transform 0.2s;
+    }
+
+    #start-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .fade {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      position: absolute;
+      width: 100%;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+
+    img {
+      max-width: 50%;
+      border-radius: 15px;
+      margin-top: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.4);
+      animation: zoomIn 3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    #snoopy {
+      position: absolute;
+      bottom: 10px;
+      left: -150px;
+      width: 150px;
+      transition: left 8s linear;
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <h1>mi niña pequeña</h1>
+    <button id="start-btn">click here 👻</button>
+  </div>
+
+  <audio id="bg-music" src="youre_in_love.mp3"></audio>
+
+  <script>
+    const btn = document.getElementById('start-btn');
+    const main = document.getElementById('main');
+    const music = document.getElementById('bg-music');
+
+    const frases = [
+      "2 años de amor…",
+      "y aún siento lo mismo que el primer día (o quizá más). 💖",
+      "Cada foto, cada momento… sigue siendo especial.",
+      "A veces me doy cuenta de que no necesito mucho, solo a ti.",
+      "Aunque no podamos vernos hoy, sigo sintiéndote cerca.",
+      "Porque no hace falta estar juntos para saber que esto es real.",
+      "gracias x todo 💕",
+      "Te amo, Frida 💖"
+    ];
+
+    const fotos = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
+
+    btn.addEventListener('click', () => {
+      music.volume = 0.3;
+      music.play();
+      main.innerHTML = '';
+      startSequence();
+    });
+
+    async function startSequence() {
+      for (let i = 0; i < frases.length; i++) {
+        const cont = document.createElement('div');
+        cont.classList.add('fade');
+        cont.innerHTML = `<h1>${frases[i]}</h1>`;
+        document.body.appendChild(cont);
+        setTimeout(() => cont.classList.add('visible'), 100);
+
+        if (i === 2 || i === 3 || i === 4) {
+          const img = document.createElement('img');
+          img.src = fotos[i - 2];
+          cont.appendChild(img);
+        }
+
+        if (i === 6) {
+          const snoopy = document.createElement('img');
+          snoopy.id = 'snoopy';
+          snoopy.src = "https://i.pinimg.com/originals/70/f4/76/70f4769088d0c42a977e292eabc4e070.png";
+          document.body.appendChild(snoopy);
+
+          setTimeout(() => snoopy.style.left = "calc(50% - 75px)", 500);
+          setTimeout(() => snoopy.style.left = "110%", 6000);
+        }
+
+        await new Promise(r => setTimeout(r, 5000));
+        cont.classList.remove('visible');
+        await new Promise(r => setTimeout(r, 1500));
+        cont.remove();
+      }
+    }
+  </script>
+</body>
+</html>
